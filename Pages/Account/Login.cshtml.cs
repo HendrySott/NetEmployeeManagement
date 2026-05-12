@@ -45,7 +45,7 @@ public class LoginModel : PageModel
         // }
 
 
-        public async Task<IActionResult> OnGetAsync(int id, string ins)
+    public async Task<IActionResult> OnGetAsync(int id, string ins)
     {
        
         string role = "";
