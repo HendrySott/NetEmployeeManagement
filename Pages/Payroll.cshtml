@@ -1,0 +1,593 @@
+@page
+@model NetEmployee.Pages.Payroll
+@inject DataServices _data
+@using System.Security.Claims
+@using NetEmployee.Data
+@{
+  var institution = User.FindFirst(ClaimTypes.Hash)?.Value;
+  var code = User.FindFirst(ClaimTypes.Actor)?.Value;
+  var position_id = @Request.Cookies["positionId"];
+
+
+    //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+
+    int cod = 0;
+    int period =0;
+    string sum = null;
+    
+    int h = 0;
+    int m = 0;
+    int s = 0;
+                                          
+    int count = 0;
+    string sumTotalTime = null;
+    float amount = 0;
+    float hour = 0;
+    double topay = 0;
+    double value = 0;
+    double addd = 0;
+    double AFP = 2;
+    double TAX = 15;
+    double af = 0;
+    double tax = 0;
+
+    int month = 0;
+    int day = 0;
+    int year = 0;
+    string tso = null;
+    string fso = null;   
+    string cdate = date;
+    string[] words2 = cdate.Split('/');
+                            
+    month = Convert.ToInt32(words2[0]);
+    day = Convert.ToInt32(words2[1]);
+    year = Convert.ToInt32(words2[2]);
+                          
+    if (day >= 16)
+    {
+                              
+      tso = year +"-"+ month+"-"+"15";
+      fso = year +"-"+ month+"-"+"01";
+                              
+      period = 2;
+    }
+    else
+    {
+      month -= 1;
+      tso = year+"-"+month +"-"+ "31";
+      fso = year +"-"+ month+"-"+"16";
+      period = 1;
+    }
+
+    
+    foreach (var am in _data.GetWageById(institution,int.Parse(position_id)))
+    {
+      amount = @am.AMOUNT;
+    }
+    hour = amount / 12 / 2;
+    
+                          
+                          
+                              
+    try
+    {
+      var bn = _data.GetBonusByUserID(institution, int.Parse(code));
+      if (bn.Count() > 0)
+      {
+        foreach (var v in bn)
+        { addd = v.AMOUNT; }
+      }
+      else
+      { addd = 0;}
+                                          
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine(e);
+        throw;
+    }
+
+  
+}
+
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><i class="fa-solid fa-file-invoice-dollar"></i>Payroll</h1>
+          </div>
+          <div class="col-sm-6">
+            
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+   <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Buscar pagos</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+               <form method="post">
+                    <div class="input-group">
+                      <select class="form-select" id="inputGroupSelect04" aria-label="Example select with button addon">
+                        <option selected>Choose...</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                      <button class="btn btn-outline-secondary" type="button">Button</button>
+                    </div>
+               </form>
+
+
+
+
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+
+
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            @* <div class="callout callout-info">
+              <h5><i class="fas fa-info"></i> Note:</h5>
+              This page has been enhanced for printing. Click the print button at the bottom of the invoice to test.
+            </div> *@
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                     @Request.Cookies["institutionName"]
+                    <small class="float-right">Date: 2/10/2014</small>
+                  </h4>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  
+                  <address>
+                    <strong>Address</strong><br>
+                    @{
+                      try{
+                        foreach(var item in _data.getInstitutionalAddress(institution)){
+                          <p>Building: @item.BUILDING_NAME<br>
+                         Number: @item.NUMBER<br>
+                         Phone: @item.PHONE
+                        
+                         
+                         </p>
+                          
+                        }
+                      }catch(Exception e){
+
+                      }
+                    }
+                    
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                 
+                  <address>
+                    <strong>Personal Information</strong><br>
+                    Name: @Request.Cookies["fname"]<br>
+                    Last name: @Request.Cookies["flastname"]<br>
+                    Phone: @Request.Cookies["phone"]<br>
+                    Email: @Request.Cookies["email"]<br>
+                    Position: @Request.Cookies["positionName"]<br>
+                    Date of admission: @Request.Cookies["admitionDate"]
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <b>Invoice #007612</b><br>
+                
+                  <b>Order ID:</b> 4F3S8J<br>
+                  <b>Payment Due:</b> 2/22/2014<br>
+                  <b>Account:</b> 968-34567
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+<hr />
+              <div class="container">
+                <div class="row">
+                    <!-- /.col -->
+                <div class="col-6">
+                  <p class="lead"><strong>Description</strong></p>
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th style="width:50%">Basic salary</th>
+                        <td>
+                          
+                          @Html.Raw("$" + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("es-RD"), "{0:N0}", Convert.ToDecimal(@Double.Round(@hour, 2))))
+                                  
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Horas extras</th>
+                        <td>$</td>
+                      </tr>
+                      <tr>
+                        <th>Performance bonus:</th>
+                        <td>
+                           @Html.Raw("$" + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("es-RD"), "{0:N0}", Convert.ToDecimal(@addd)))
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>Total:</th>
+                        <td>
+                          @{
+                            double totalEarned = 0;
+                            totalEarned = hour + addd;
+                          }
+                            @Html.Raw("$" + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("es-RD"), "{0:N0}", Convert.ToDecimal(@Double.Round(@totalEarned, 2))))
+
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col -->
+                <!-- /.col -->
+                <div class="col-6">
+                  <p class="lead">Deductions</p>
+
+                  <div class="table-responsive">
+                    <table class="table">
+                      <tr>
+                        <th style="width:50%">AFP:</th>
+                        <td>
+                          @{
+                                      double bonusandamounts = 0;
+                                      topay = Convert.ToDouble(hour);
+                                      bonusandamounts = topay+addd;
+                                      
+                                      af = bonusandamounts * AFP / 100;
+                                  }
+                                  
+                                  @Html.Raw("$" + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("es-RD"), "{0:N0}", Convert.ToDecimal(@Double.Round(af, 2))))
+
+                        </td>
+                      </tr>
+                      <tr>
+                        <th>SFM</th>
+                        <td>$-</td>
+                      </tr>
+                      <tr>
+                        <th>Tax:</th>
+                        <td>
+                          @{
+                            string rs = "";
+                                      if (@Double.Round(hour, 2) < 35000)
+                                      {
+                                          rs = "N/A";
+                                      }
+                                      else
+                                      {
+                                          tax = Double.Round(hour, 2) * TAX / 100;
+                                          @Html.Raw("$" + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("es-RD"), "{0:N0}", Convert.ToDecimal(@tax)))
+                                      }
+
+                                  }
+                                  @rs
+                          </td>
+                      </tr>
+                      <tr>
+                        <th>Health insurance:</th>
+                        <td>$-</td>
+                      </tr>
+                      <tr>
+                        <th>Total deduction:</th>
+                        @{
+                          double totalDeduction = 0;
+                          totalDeduction = af + tax;
+
+                        }
+                        <td>
+                          @Html.Raw("$" + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("es-RD"), "{0:N0}", Convert.ToDecimal(@Double.Round(totalDeduction, 2))))
+
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <!-- /.col -->
+            </div>
+            </div>
+              
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Concept</th>
+                      <th>Serial #</th>
+                      <th>Description</th>
+                      <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Payroll</td>
+                      <td>455-981-221</td>
+                      <td>El snort testosterone trophy driving gloves handsome</td>
+                      <td>
+                        @{
+                          double totalPayment = 0;
+                          totalPayment = totalEarned - totalDeduction;
+                        }
+                        @Html.Raw("$" + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("es-RD"), "{0:N0}", Convert.ToDecimal(@Double.Round(totalPayment, 2) )))
+                      </td>
+                    </tr>
+                    
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              
+              <!-- /.row -->
+              <div class="row no-print">
+                <div class="col-12">
+                  
+                  <button type="button" class="btn btn-default float-right" onclick="printDiv()" style="margin-right: 5px;">
+                    <i class="fas fa-print"></i> Print
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+    @section Scripts{
+      <script>
+
+        
+
+
+        function printDiv() {
+            // Get the HTML content of the printable element
+            var printableElement = document.getElementById('printable-content').innerHTML;
+            // Create a new window
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printableElement;
+            // Print the contents of the new window
+            window.print();
+            // Restore original content
+            document.body.innerHTML = originalContents;
+        }
+      </script>
+    }
+
+
+
+    <div class="modal fade" id="AvailableModel" aria-hidden="true" aria-labelledby="AvailableModelLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AvailableModelLabel">Time registry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            
+            
+            @{
+                try
+                {
+                    var d = _data.TrackUserHavailability(institution, date);
+                    if (d.Count() == 0)
+                    {
+                        <h3>Offline</h3>
+                    }
+                    else
+                    {
+                        foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+                                     
+                                case "BREAK":
+                                    <h3>Break</h3>
+                                    break;
+                                case "LUNCH":
+                                    <h3>Lunch</h3>
+                                    break;
+                                case "OTHER":
+                                    <h3>Other</h3>
+                                    break;
+                                case "END":
+                                    <h3>End day</h3>
+                                    break;
+                                case "READY":
+                                    <h3>Online</h3>
+                                    break;
+                                default:
+                                    <h3>Offline</h3>
+                                    break;
+
+                            }
+                                
+                        }
+                        
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                   
+                }
+            <select class="form-select" id="sender" style="margin: -45px 10px 7px 0px;
+                                                               width: 22%;
+                                                               float: right;">
+               
+                    @try
+                    {
+                        
+                        var d = _data.TrackUserHavailability(institution, date);
+                        if (d.Count() == 0)
+                        {
+                            <option selected>Choose</option>
+                            <option value="available">Available</option>
+                            
+                        }
+                        else
+                        {
+                            foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+
+                                case "BREAK":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "LUNCH":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "OTHER":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "END":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+
+                                    break;
+                                case "READY":
+
+
+                                    @if (t.LUNCH_S != "-")
+                                    {
+                                        <option selected>Choose</option>
+
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected>Choose</option>
+                                        <option value="lunch">Lunch</option>
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+
+
+                                    break;
+                                default:
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="break">Break</option>
+                                    <option value="other">Other</option>
+                                    <option value="end">End day</option>
+                                    break;
+
+                            }
+
+                        }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                
+
+            </select>
+             }
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="1" class="table-active">Start</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Lunch</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Other</th>
+                    <th scope="col" colspan="1" class="table-active">End Day</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    @{
+                        try
+                        {
+                            foreach (var item in _data.LookUpUserTimeTracker(institution,date,int.Parse(code)))
+                            {
+                                
+                                    <th>@item.START</th>
+                                    <td>@item.BREAK</td>
+                                    <td>@item.BREAK_</td>
+                                    <td>@item.LUNCH</td>
+                                    <td>@item.LUNCH_</td>
+                                    <th>@item.BREAKL</th>
+                                    <td>@item.BREAKL_</td>
+                                    <th>@item.OTHER</th>
+                                    <td>@item.OTHER_</td>
+                                    <th>@item.END</th>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <form method="post">
+                <input type="hidden" asp-for="communication.Aux" id="receiver" />
+                <input type="hidden" asp-for="communication.Command" value="timeOnTracker" />
+                <input type="submit" id="sendDataToTracker" class="btn btn-primary"  data-bs-dismiss="modal" value="Regiater">
+            </form>
+            
+        </div>
+        
+    </div>
+  </div>
+</div>

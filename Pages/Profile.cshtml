@@ -1,0 +1,579 @@
+@page
+
+@model NetEmployee.Pages.Profile
+@using NetEmployee.Data
+@using NetEmployee.Data
+@using System.Security.Claims
+@inject AccountController _ctr
+@inject DataServices _data
+
+
+
+@{
+                
+
+    var institution =  @User.FindFirst(ClaimTypes.Hash)?.Value;
+    var code =  @User.FindFirst(ClaimTypes.Actor)?.Value;
+    
+
+    //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+   
+    string grade = "";
+  string skils = "";
+
+  
+}
+<br />
+<section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-3" style="flex: 0 0 30%; max-width: 30%;">
+
+            <!-- Profile Image -->
+            <div class="card card-primary">
+              <div class="card-body box-profile">
+                <div class="text-center">
+                  <img class="profile-user-img img-fluid img-circle"
+                       src="/Public/Icon/glIcon.png"
+                       alt="User profile picture" style="border: 1px solid #efefef;
+                                                          margin: 0 auto;
+                                                          padding: 0px;
+                                                          width: 200px;
+                                                        }">
+                       
+                </div>
+
+                <h3 class="profile-username text-center" style="font-size: 25px;
+                                                                margin-top: 10px;
+                                                                margin-bottom: 0;
+                                                                ">@Request.Cookies["fname"] @Request.Cookies["flastname"]</h3>
+
+                <p class="text-muted text-center">@Request.Cookies["positionName"]</p>
+
+                <ul class="list-group list-group-unbordered mb-3">
+                  <li class="list-group-item">
+                    <b>Email</b> <div class="float-right">@Request.Cookies["email"]</div>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Email </b> <div class="float-right">@Request.Cookies["personalEmail"]</div>
+                  </li>
+                  <li class="list-group-item">
+                    <b>Phone</b> <div class="float-right">@Request.Cookies["phone"]</div>
+                  </li>
+                  
+                </ul>
+
+                
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+
+            <!-- About Me Box -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">About Me</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <strong><i class="fas fa-book mr-1"></i> Education</strong>
+
+                <p class="text-muted">
+                  Bachelor of Engineering from the Dominican Adventist Univercity at Bonao City
+                </p>
+
+                <hr>
+
+                <strong><i class="fas fa-map-marker-alt mr-1"></i> Address</strong>
+
+                <p class="text-muted">Valiente Santo Domingo Este D.R.</p>
+
+                <hr>
+
+                <strong data-bs-toggle="modal" href="#Stlls"><i class="fas fa-pencil-alt mr-1"></i> Skills</strong>
+                
+                <ol class="text-muted">
+                  @{
+                    try{
+                        foreach(var i in _data.getSkills(institution,int.Parse(code))){
+                            skils = i.SKILLS;
+                            <li class="tag tag-success">i.SKILLS</li>
+                        }
+                    }catch(Exception e){
+
+                    }
+                  }
+                  
+                  
+                </ol>
+                <hr>
+
+                
+
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-9" style="flex: 0 0 70%; max-width: 70%;">
+            <div class="card">
+              <div class="card-header p-2">
+                
+
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-light active" id="pills-Edit-tab" data-bs-toggle="pill" data-bs-target="#pills-Edit" type="button" role="tab" aria-controls="pills-Edit" aria-selected="true">Update</button>
+                  </li>
+                  @* <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-light" id="pills-Team-tab" data-bs-toggle="pill" data-bs-target="#pills-Team" type="button" role="tab" aria-controls="pills-Team" aria-selected="false">Team</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-light" id="pills-Profile-tab" data-bs-toggle="pill" data-bs-target="#pills-Profile" type="button" role="tab" aria-controls="pills-Profile" aria-selected="false">Profile</button>
+                  </li> *@
+                </ul>
+              </div><!-- /.card-header -->
+              <div class="card-body">
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="pills-Edit" role="tabpanel" aria-labelledby="pills-Edit-tab">
+                    
+
+
+    
+    
+    @{
+    try
+    {
+
+        foreach (var person in _data.GetPerson(institution,int.Parse(code)))
+        {
+
+            grade = person.GRADE;
+
+    <section class="content">
+
+      <!-- Default box -->
+      
+        
+        <div class="card-body">
+
+
+
+          <form method="post" id="basic-form" style="background-color: #fff; ">
+
+  
+        <div class="container">
+    
+    <input type="hidden" asp-for="upd.CODE" value="@person.CODE"/>
+        <h1>@person.F_NAME @person.S_NAME @person.F_LASTN @person.S_LASTN</h1>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">First name</label>
+                    <input type="text" asp-for="upd.F_NAME" value="@person.F_NAME"  class="form-control" id="fname" disabled required minlength="3" maxlength="15">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Middle name</label>
+                    <input type="text" asp-for="upd.S_NAME" value="@person.S_NAME" class="form-control" id="sname" disabled required minlength="3" maxlength="15">
+                </div>
+            </div>
+            
+        </div>
+ 
+    
+    
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Paternal last name</label>
+                <input type="text" asp-for="upd.F_LASTN" value="@person.F_LASTN" class="form-control" id="flast" disabled required minlength="3" maxlength="15">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Maternal last name</label>
+                <input type="text" asp-for="upd.S_LASTN" value="@person.S_LASTN" class="form-control" id="slast" disabled required minlength="3" maxlength="15">
+            </div>
+        </div>
+        
+    </div>
+    <hr/>
+    <h2> Profile</h2>
+    
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Phone</label>
+                <input type="tel" asp-for="upd.PHONE" value="@person.PHONE" class="form-control" id="phone"  required minlength="10" maxlength="13">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Id</label>
+                <input type="text" asp-for="upd.IDENTIFICATION" value="@person.IDENTIFICATION" class="form-control" id="uid"  required minlength="12" maxlength="12">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input type="email" asp-for="upd.PERSONAL_EMAIL" value="@person.PERSONAL_EMAIL" class="form-control" id="email"  required>
+            </div>
+        </div>
+    </div>
+    
+    <hr/>
+    <h2> Address</h2>
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Street</label>
+                <input type="text" asp-for="upd.STREET" value="@person.STREET" class="form-control" id="street"  required minlength="3" maxlength="15">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Home</label>
+                <input type="number" asp-for="upd.HOME" value="@person.HOME" class="form-control"  id="stnumber"  required minlength="1" maxlength="9">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">County</label>
+                <input type="text" asp-for="upd.COUNTY" value="@person.COUNTY" class="form-control" id="sector"   required minlength="3" maxlength="15">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">County</label>
+                <input type="text" asp-for="upd.COUNTRY" value="@person.COUNTRY" class="form-control" id="region"  required minlength="3" maxlength="15">
+            </div>
+        </div>
+    </div>
+    <hr />
+    
+    <h2>Education</h2>
+    <div class="col">
+            <div class="mb-3">
+                <a class="btn btn-light" data-bs-toggle="modal" href="#AcademicalGrade" role="button">Update academical grade</a>
+
+                
+                
+            </div>
+
+            
+        </div>
+       
+        
+ 
+    
+    
+    <hr/>
+   
+    <input type="hidden" value="@person.CODE" id="code" />
+    <input type="hidden"  asp-for="communication.Command" value="updAll"/>
+  
+    
+    
+    
+    <br />
+
+            <div style="float:right">
+                <button  type="submit" id="save" class="btn btn-light" \>Save</button>
+
+            </div>
+            
+            
+
+       
+ 
+    
+    
+    
+</div>
+<br />
+<br />
+        
+    
+
+</form>
+
+
+
+
+        </div>
+        
+
+    </section>
+
+
+}
+
+}
+    catch (Exception e)
+    {
+        
+    }
+}
+
+<div class="modal fade" id="AcademicalGrade" aria-hidden="true" aria-labelledby="AcademicalGradeLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AcademicalGradeLabel">Update academical grade</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+
+      
+      <div class="modal-body">
+              
+
+        <div class="form-floating">
+  <textarea class="form-control" asp-for="upd.GRADE" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+  <label for="floatingTextarea">Education</label>
+</div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden"  asp-for="communication.Command" value="updC"/>
+
+        <button type="submit" class="btn btn-light" data-bs-target="#AcademicalGrade2" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+                  </div>
+                  <div class="tab-pane fade" id="pills-Team" role="tabpanel" aria-labelledby="pills-Team-tab">...</div>
+                  <div class="tab-pane fade" id="pills-Profile" role="tabpanel" aria-labelledby="pills-Profile-tab">...</div>
+                </div>
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+<div class="modal fade" id="Stlls" aria-hidden="true" aria-labelledby="StllsLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="StllsLabel">Modal 1</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+        <div class="modal-body">
+          <div class="form-floating">
+            <textarea class="form-control" asp-for="upd.SKILLS"  placeholder="Leave a comment here" id="floatingTextarea">@skils</textarea>
+            <label for="floatingTextarea">Skills</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" asp-for="communication.Command" value="updSkils" />
+          <button type="submit" class="btn btn-primary" data-bs-target="#Stlls2" data-bs-toggle="modal" data-bs-dismiss="modal">Open second modal</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="AvailableModel" aria-hidden="true" aria-labelledby="AvailableModelLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AvailableModelLabel">Time registry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            
+            
+            @{
+                try
+                {
+                    var d = _data.TrackUserHavailability(institution, date);
+                    if (d.Count() == 0)
+                    {
+                        <h3>Offline</h3>
+                    }
+                    else
+                    {
+                        foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+                                     
+                                case "BREAK":
+                                    <h3>Break</h3>
+                                    break;
+                                case "LUNCH":
+                                    <h3>Lunch</h3>
+                                    break;
+                                case "OTHER":
+                                    <h3>Other</h3>
+                                    break;
+                                case "END":
+                                    <h3>End day</h3>
+                                    break;
+                                case "READY":
+                                    <h3>Online</h3>
+                                    break;
+                                default:
+                                    <h3>Offline</h3>
+                                    break;
+
+                            }
+                                
+                        }
+                        
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                   
+                }
+            <select class="form-select" id="sender" style="margin: -45px 10px 7px 0px;
+                                                               width: 22%;
+                                                               float: right;">
+               
+                    @try
+                    {
+                        
+                        var d = _data.TrackUserHavailability(institution, date);
+                        if (d.Count() == 0)
+                        {
+                            <option selected>Choose</option>
+                            <option value="available">Available</option>
+                            
+                        }
+                        else
+                        {
+                            foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+
+                                case "BREAK":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "LUNCH":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "OTHER":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "END":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+
+                                    break;
+                                case "READY":
+
+
+                                    @if (t.LUNCH_S != "-")
+                                    {
+                                        <option selected>Choose</option>
+
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected>Choose</option>
+                                        <option value="lunch">Lunch</option>
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+
+
+                                    break;
+                                default:
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="break">Break</option>
+                                    <option value="other">Other</option>
+                                    <option value="end">End day</option>
+                                    break;
+
+                            }
+
+                        }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                
+
+            </select>
+             }
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="1" class="table-active">Start</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Lunch</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Other</th>
+                    <th scope="col" colspan="1" class="table-active">End Day</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    @{
+                        try
+                        {
+                            foreach (var item in _data.LookUpUserTimeTracker(institution,date,int.Parse(code)))
+                            {
+                                
+                                    <th>@item.START</th>
+                                    <td>@item.BREAK</td>
+                                    <td>@item.BREAK_</td>
+                                    <td>@item.LUNCH</td>
+                                    <td>@item.LUNCH_</td>
+                                    <th>@item.BREAKL</th>
+                                    <td>@item.BREAKL_</td>
+                                    <th>@item.OTHER</th>
+                                    <td>@item.OTHER_</td>
+                                    <th>@item.END</th>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <form method="post">
+                <input type="hidden" asp-for="communication.Aux" id="receiver" />
+                <input type="hidden" asp-for="communication.Command" value="timeOnTracker" />
+                <input type="submit" id="sendDataToTracker" class="btn btn-primary"  data-bs-dismiss="modal" value="Regiater">
+            </form>
+            
+        </div>
+        
+    </div>
+  </div>
+</div>

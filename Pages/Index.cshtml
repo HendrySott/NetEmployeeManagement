@@ -1,0 +1,1056 @@
+﻿@page
+@model NetEmployee.Pages.IndexModel
+
+@using NetEmployee.Data
+@using System.Security.Claims
+@inject AccountController _ctr
+@inject DataServices _data
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@inject DataServices _data
+@inject AccountController _ctr
+@{
+    var institution = User.FindFirst(ClaimTypes.Hash)?.Value;
+    var code = User.FindFirst(ClaimTypes.Actor)?.Value;
+    var role = User.FindFirst(ClaimTypes.Role)?.Value;
+    var team = Request.Cookies["team"];
+    
+    //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+    string fname="";
+    string flastname = "";
+    int online = 0;
+    int offline = 0;
+
+
+
+ 
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido @Request.Cookies["fname"]!</h1>
+    <p>@Request.Cookies["positionName"]</p>
+</div>
+
+
+@ViewData["InstitutionName"]
+<br />
+
+   <section class="content">
+      <div class="container-fluid">
+
+@{
+  if(int.Parse(role) >= 4){
+
+        <div class="row">
+          <div class="col-md-3 col-sm-6 col-12">
+
+   
+          @try{
+             @foreach (var i in _data.ILoadAllUserByUIDINS(int.Parse(team),institution))
+                                                    {
+                                                        foreach (var t in _data.TrackUserHavailability(institution, date))
+                                                        {
+                                                            switch (t.STATE)
+                                                            {
+                                                                 
+                                                                case "BREAK":
+                                                                    offline += 1;
+                                                                    
+                                                                    
+                                                                    break;
+                                                                case "LUNCH":
+                                                                offline += 1;
+                                                                    
+                                                                    break;
+                                                                case "OTHER":
+                                                                offline += 1;
+                                                                   
+                                                                    break;
+                                                                case "END":
+                                                                offline += 1;
+                                                                    
+                                                                    break;
+                                                                case "READY":
+                                                                online += 1;
+                                                                   
+                                                                    break;
+                            
+                                                            }
+                                                            
+                                                        }
+                                                         
+                                                    }
+          }catch(Exception e){
+
+          }                              
+                                                    
+                          
+        
+                        
+
+
+            <div class="info-box">
+              <span class="info-box-icon bg-info"><i class="fa-solid fa-user-clock"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Offline</span>
+                <span class="info-box-number"> @offline</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-success"><i class="fa-solid fa-user-check"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Online</span>
+                <span class="info-box-number"> @online</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-warning"><i class="fa-solid fa-user-injured"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Medical license</span>
+                
+                <span class="info-box-number">
+                  @{
+                    int med = 0;
+                    try{
+                      @foreach(var item in _data.LoadMedicalLicenseRegistryByTeam(institution,int.Parse(team))){
+                        med += 1;
+                      }
+                    }catch(Exception e){
+
+                    }
+                  }
+                    @med
+                </span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+          <div class="col-md-3 col-sm-6 col-12">
+            <div class="info-box">
+              <span class="info-box-icon bg-danger"><i class="fa-solid fa-user-xmark"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text">Absent <a data-bs-toggle="modal" href="#AbsenceReport">Report</a></span>
+                @{ 
+                  int AbsenceCount =0;
+                  try{
+                    foreach(var item in _data.LoadTeamMembers(institution,int.Parse(team))){
+                      foreach(var i in _data.LoadAbsences(institution, item.CODE, date)){
+                        AbsenceCount +=1;
+                      }
+                      
+                    }
+                  }catch(Exception e){
+
+                  }
+                }
+                
+                <span class="info-box-number">@AbsenceCount</span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+          <!-- /.col -->
+        </div>
+
+}
+}
+
+        <div class="row">
+
+
+@{
+  if(int.Parse(role) >= 4){
+
+
+
+
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Vacation</h3>
+          <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+              <button class="nav-link active" id="nav-pending-tab" data-bs-toggle="tab" data-bs-target="#nav-pending" type="button" role="tab" aria-controls="nav-pending" aria-selected="true">Pending</button>
+              <button class="nav-link" id="nav-aprover-tab" data-bs-toggle="tab" data-bs-target="#nav-aprover" type="button" role="tab" aria-controls="nav-aprover" aria-selected="false">Aprover</button>
+              <button class="nav-link" id="nav-Declined-tab" data-bs-toggle="tab" data-bs-target="#nav-Declined" type="button" role="tab" aria-controls="nav-Declined" aria-selected="false">Declined</button>
+            </div>
+          </nav>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-pending" role="tabpanel" aria-labelledby="nav-pending-tab">
+                        
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-regular fa-calendar-minus"></i>
+                  Vacation request
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="list-group">
+                
+                @foreach(var item in _data.LoadAllBoockedVacationNotAuthorized(institution,0 ,0 )){
+
+                  <a data-bs-toggle="modal" href="#VacationAuth" id="@item.ID" class="list-group-item list-group-item-action vlp">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">@foreach(var usr in _data.GetUserById(institution, item.CODE)){@usr.F_NAME @usr.F_LASTN}</h5>
+                      <small class="text-muted">Dias: @item.DAYS</small>
+                    </div>
+                    <p class="mb-1">From: @item.FROM_DATE, To: @item.TO_DATE </p>
+                    <small class="text-muted">Pending</small>
+                    <input type="hidden" id="codex" value="@item.CODE" asp-for="@item.CODE"/>
+                    
+                  </a>
+
+                }
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          
+
+            </div>
+            <div class="tab-pane fade" id="nav-aprover" role="tabpanel" aria-labelledby="nav-aprover-tab">
+                        
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-regular fa-calendar-check"></i>
+                  Approved vacation request
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="list-group">
+                
+                @foreach(var item in _data.LoadAllBoockedVacationNotAuthorized(institution,1 ,int.Parse(code) )){
+
+                  <a data-bs-toggle="modal" href="#VacationAuth" id="@item.ID" class="list-group-item list-group-item-action vlp">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">@foreach(var usr in _data.GetUserById(institution, item.CODE)){@usr.F_NAME @usr.F_LASTN}</h5>
+                      <small class="text-muted">Dias: @item.DAYS</small>
+                    </div>
+                    <p class="mb-1">From: @item.FROM_DATE, To: @item.TO_DATE </p>
+                    <small class="text-muted">Approved</small>
+                      <input type="hidden" id="codex" value="@item.CODE" asp-for="@item.CODE"/>
+
+                    
+                  </a>
+
+                }
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          
+            </div>
+            <div class="tab-pane fade" id="nav-Declined" role="tabpanel" aria-labelledby="nav-Declined-tab">          
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-regular fa-calendar-xmark"></i>
+                  Declined vacation request
+                </h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="list-group">
+                
+                @foreach(var item in _data.LoadAllBoockedVacationNotAuthorized(institution, 3 ,int.Parse(code) )){
+
+                  <a data-bs-toggle="modal" href="#VacationAuth" id="@item.ID" class="list-group-item list-group-item-action vlp">
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">@foreach(var usr in _data.GetUserById(institution, item.CODE)){@usr.F_NAME @usr.F_LASTN}</h5>
+                      <small class="text-muted">Dias: @item.DAYS</small>
+                    </div>
+                    <p class="mb-1">From: @item.FROM_DATE, To: @item.TO_DATE </p>
+                    <small class="text-muted">Declined</small>
+                                        <input type="hidden" id="codex" value="@item.CODE" asp-for="@item.CODE"/>
+
+                  </a>
+
+                }
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          </div>
+          </div>
+
+
+
+
+
+
+
+          <!-- ./col -->
+          <div class="col-md-6">
+            <h3>Medical license</h3>
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-Pending-tab" data-bs-toggle="tab" data-bs-target="#nav-Pending" type="button" role="tab" aria-controls="nav-Pending" aria-selected="true">Pending</button>
+                <button class="nav-link" id="nav-Approved-tab" data-bs-toggle="tab" data-bs-target="#nav-Approved" type="button" role="tab" aria-controls="nav-Approved" aria-selected="false">Approved</button>
+                <button class="nav-link" id="nav-Declinedx-tab" data-bs-toggle="tab" data-bs-target="#nav-Declinedx" type="button" role="tab" aria-controls="nav-Declinedx" aria-selected="false">Declined</button>
+              </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+              <div class="tab-pane fade show active" id="nav-Pending" role="tabpanel" aria-labelledby="nav-Pending-tab">
+                <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-regular fa-calendar-minus"></i>
+                  Medical license pending
+                </h3>
+              </div>
+              <div class="list-group">
+                
+                @foreach(var item in _data.LoadNewMedicalLicenseRegistryData(institution,0,0)){
+                  string classx = "";
+                 
+                  switch(@item.CONSEPT){
+                    case "Enfermedad o accidente común":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Fallecimiento":
+                      classx = "list-group-item-warning";
+                    break;
+                    case "Accidente del trabajo o del trayecto":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Discapacidad":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Enfermedad profecional":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Prórroga medicina preventiva":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Patología del embarazo":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Alumbramiento":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Licencia maternal pre y postnatal":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Enfermedad grave del niños":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Celebración del matrimonio":
+                      classx = "list-group-item-primary";
+                    break;
+                  }
+                  <a data-bs-toggle="modal" href="#LicenseAuthx" id="@item.ID" class="list-group-item list-group-item-action vll @classx" >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">@foreach(var usr in _data.GetUserById(institution, item.CODE)){@usr.F_NAME @usr.F_LASTN}</h5>
+                      <small class="text-muted">Dias: @item.DAYS</small>
+                    </div>
+                    <p class="mb-1">From: @item.FROM_DATE, To: @item.TO_DATE </p>
+                    <small class="text-muted">@item.CONSEPT is pending approve from: @item.DATE_CREATION</small>
+
+                    <input type="hidden" id="codex" value="@item.CODE" asp-for="@item.CODE"/>
+
+                  </a>
+
+                }
+
+              </div>
+            </div>
+              </div>
+              <div class="tab-pane fade" id="nav-Approved" role="tabpanel" aria-labelledby="nav-Approved-tab">
+                <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-regular fa-calendar-check"></i>
+                  Medical license Approved
+                </h3>
+              </div>
+              <div class="list-group">
+                
+                @foreach(var item in _data.LoadNewMedicalLicenseRegistryData(institution,1,int.Parse(code))){
+                  string classx = "";
+                 
+                  switch(@item.CONSEPT){
+                    case "Enfermedad o accidente común":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Fallecimiento":
+                      classx = "list-group-item-warning";
+                    break;
+                    case "Accidente del trabajo o del trayecto":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Discapacidad":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Enfermedad profecional":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Prórroga medicina preventiva":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Patología del embarazo":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Alumbramiento":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Licencia maternal pre y postnatal":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Enfermedad grave del niños":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Celebración del matrimonio":
+                      classx = "list-group-item-primary";
+                    break;
+                  }
+                  <a data-bs-toggle="modal" href="#LicenseAuthx" id="@item.ID" class="list-group-item list-group-item-action vll @classx" >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">@foreach(var usr in _data.GetUserById(institution, item.CODE)){@usr.F_NAME @usr.F_LASTN}</h5>
+                      <small class="text-muted">Dias: @item.DAYS</small>
+                    </div>
+                    <p class="mb-1">From: @item.FROM_DATE, To: @item.TO_DATE </p>
+                    
+                    <small class="text-muted">@item.CONSEPT Pendiente autorisacion from: @item.DATE_CREATION</small>
+                    <input type="hidden" id="codex" value="@item.CODE" asp-for="@item.CODE"/>
+
+                  </a>
+
+                }
+
+              </div>
+            </div>
+              </div>
+              <div class="tab-pane fade" id="nav-Declinedx" role="tabpanel" aria-labelledby="nav-Declinedx-tab">
+                <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="fa-regular fa-calendar-xmark"></i>
+                  Medical license declined
+                </h3>
+              </div>
+              <div class="list-group">
+                
+                @foreach(var item in _data.LoadNewMedicalLicenseRegistryData(institution,3,int.Parse(code))){
+                  string classx = "";
+                 
+                  switch(@item.CONSEPT){
+                    case "Enfermedad o accidente común":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Fallecimiento":
+                      classx = "list-group-item-warning";
+                    break;
+                    case "Accidente del trabajo o del trayecto":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Discapacidad":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Enfermedad profecional":
+                      classx = "list-group-item-dark";
+                    break;
+                    case "Prórroga medicina preventiva":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Patología del embarazo":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Alumbramiento":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Licencia maternal pre y postnatal":
+                      classx = "list-group-item-info";
+                    break;
+                    case "Enfermedad grave del niños":
+                      classx = "list-group-item-secondary";
+                    break;
+                    case "Celebración del matrimonio":
+                      classx = "list-group-item-primary";
+                    break;
+                  }
+                  <a data-bs-toggle="modal" href="#LicenseAuthx" id="@item.ID" class="list-group-item list-group-item-action vll @classx" >
+                    <div class="d-flex w-100 justify-content-between">
+                      <h5 class="mb-1">@foreach(var usr in _data.GetUserById(institution, item.CODE)){@usr.F_NAME @usr.F_LASTN}</h5>
+                      <small class="text-muted">Dias: @item.DAYS</small>
+                    </div>
+                    <p class="mb-1">Desde: @item.FROM_DATE, To: @item.TO_DATE </p>
+                    <h5 class="text-muted">@item.CONSEPT</h5>
+                    <small class="text-muted">@item.CONSEPT; Created at @item.DATE_CREATION</small>
+                    <input type="hidden" id="codex" value="@item.CODE" asp-for="@item.CODE"/>
+
+                  </a>
+
+                }
+
+              </div>
+            </div>
+              </div>
+            </div>
+
+            
+            <!-- /.card -->
+          </div>
+          <!-- ./col -->
+        </div>
+
+
+
+
+       
+
+
+
+
+
+
+
+  }
+
+
+}
+          
+      </div>
+
+
+
+
+
+      @* <div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">General Elements</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <form method="post">
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <form method="post">
+                        <label>Urgente</label>
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"Urgent")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+
+                        <div class="input-group mb-3" style="margin: 5px 0px 0px 0px;">
+                          <input type="hidden" asp-for="personalTk.RANKING" value="Urgent"/>
+                          <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                          <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                          <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Agregar</button>
+                        </div>
+                        </form>
+                        
+                      </div>
+                      
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <form method="post">
+                        <label>No urgente</label>
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"No urgent")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+
+                        <div class="input-group mb-3" style="margin: 5px 0px 0px 0px;">
+                          <input type="hidden" asp-for="personalTk.RANKING" value="No urgent"/>
+                          <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                          <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon3">
+                          <button class="btn btn-outline-secondary" type="submit" id="button-addon3">Agregar</button>
+                        </div>
+
+                        </form>
+                      </div>
+                      
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <form method="post">
+                        <label>Importante</label>
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"Important")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+
+                        <div class="input-group mb-3" style="margin: 5px 0px 0px 0px;">
+                          <input type="hidden" asp-for="personalTk.RANKING" value="Important"/>
+                          <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                          <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon4">
+                          <button class="btn btn-outline-secondary" type="submit" id="button-addon4">Agregar</button>
+                        </div>
+
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <form method="post">
+                        <label>No Importante</label>
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"No Important")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+
+                        <div class="input-group mb-3" style="margin: 5px 0px 0px 0px;">
+                          <input type="hidden" asp-for="personalTk.RANKING" value="No Important"/>
+                          <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                          <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon5">
+                          <button class="btn btn-outline-secondary" type="submit" id="button-addon5">Agregar</button>
+                        </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                 
+
+
+
+                  
+                </form>
+              </div>
+              <!-- /.card-body -->
+            </div> *@
+
+
+
+
+
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+
+<div class="modal fade" id="AvailableModel" aria-hidden="true" aria-labelledby="AvailableModelLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AvailableModelLabel">Time registry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            
+            
+            @{
+                try
+                {
+                    var d = _data.TrackUserHavailability(institution, date);
+                    if (d.Count() == 0)
+                    {
+                        <h3>Offline</h3>
+                    }
+                    else
+                    {
+                        foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+                                     
+                                case "BREAK":
+                                    <h3>Break</h3>
+                                    break;
+                                case "LUNCH":
+                                    <h3>Lunch</h3>
+                                    break;
+                                case "OTHER":
+                                    <h3>Other</h3>
+                                    break;
+                                case "END":
+                                    <h3>End day</h3>
+                                    break;
+                                case "READY":
+                                    <h3>Online</h3>
+                                    break;
+                                default:
+                                    <h3>Offline</h3>
+                                    break;
+
+                            }
+                                
+                        }
+                        
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                   
+                }
+            <select class="form-select" id="sender" style="margin: -45px 10px 7px 0px;
+                                                               width: 22%;
+                                                               float: right;">
+               
+                    @try
+                    {
+                        
+                        var d = _data.TrackUserHavailability(institution, date);
+                        if (d.Count() == 0)
+                        {
+                            <option selected>Choose</option>
+                            <option value="available">Available</option>
+                            
+                        }
+                        else
+                        {
+                            foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+
+                                case "BREAK":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "LUNCH":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "OTHER":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "END":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+
+                                    break;
+                                case "READY":
+
+
+                                    @if (t.LUNCH_S != "-")
+                                    {
+                                        <option selected>Choose</option>
+
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected>Choose</option>
+                                        <option value="lunch">Lunch</option>
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+
+
+                                    break;
+                                default:
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="break">Break</option>
+                                    <option value="other">Other</option>
+                                    <option value="end">End day</option>
+                                    break;
+
+                            }
+
+                        }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                
+
+            </select>
+             }
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="1" class="table-active">Start</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Lunch</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Other</th>
+                    <th scope="col" colspan="1" class="table-active">End Day</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    @{
+                        try
+                        {
+                            foreach (var item in _data.LookUpUserTimeTracker(institution,date,int.Parse(code)))
+                            {
+                                
+                                    <th>@item.START</th>
+                                    <td>@item.BREAK</td>
+                                    <td>@item.BREAK_</td>
+                                    <td>@item.LUNCH</td>
+                                    <td>@item.LUNCH_</td>
+                                    <th>@item.BREAKL</th>
+                                    <td>@item.BREAKL_</td>
+                                    <th>@item.OTHER</th>
+                                    <td>@item.OTHER_</td>
+                                    <th>@item.END</th>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <form method="post">
+                <input type="hidden" asp-for="communication.Aux" id="receiver" />
+                <input type="hidden" asp-for="communication.Command" value="timeOnTracker" />
+                <input type="submit" id="sendDataToTracker" class="btn btn-primary"  data-bs-dismiss="modal" value="Regiater">
+            </form>
+            
+        </div>
+        
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade" id="VacationAuth" aria-hidden="true" aria-labelledby="VacationAuthLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="VacationAuthLabel">Aprovation form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Aprove or decline request.
+      </div>
+      <div class="modal-footer">
+        
+        <form method="post"> 
+          <input  type="hidden" asp-for="communication.Command" value="VacationDecline" /> 
+          <input  type="hidden" asp-for="communication.Data" value="" id="import0" /> 
+          <input type="hidden" value="" id="cxo1"  asp-for="vacationPlan.CODE"/>   
+          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-dismiss="modal">Decline request</button>
+          </form>
+        <form method="post"> 
+          <input  type="hidden" asp-for="communication.Command" value="authVacation" /> 
+          <input  type="hidden" asp-for="communication.Data" value="" id="import1" /> 
+          <input type="hidden" value="" id="cxo2"  asp-for="vacationPlan.CODE"/> 
+          
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-dismiss="modal">Aprove request</button>
+          </form>     
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="LicenseAuthx" aria-hidden="true" aria-labelledby="LicenseAuthxLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="LicenseAuthxLabel">Aprovation form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Aprove or decline request.
+      </div>
+      <div class="modal-footer">
+        
+        <form method="post"> 
+          <input  type="hidden" asp-for="communication.Command" value="LicenseDecline" /> 
+          <input  type="hidden" asp-for="communication.Data" value="" id="import2" /> 
+          <input type="hidden" value="" id="cxo3" asp-for="medicalLicence.CODE"/>   
+          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-dismiss="modal">Decline request</button>
+          </form>
+        <form method="post"> 
+          <input  type="hidden" asp-for="communication.Command" value="authLicense" /> 
+          <input  type="hidden" asp-for="communication.Data" value="" id="import3" /> 
+          <input type="hidden" value="" id="cxo4" asp-for="medicalLicence.CODE"/>  
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-dismiss="modal">Aprove request</button>
+          </form>     
+    </div>
+  </div>
+</div>
+</div>
+
+
+
+
+<div class="modal fade" id="AbsenceReport" aria-hidden="true" aria-labelledby="AbsenceReportLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AbsenceReportLabel">Reporting Absence</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+
+      
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="formGroupExampleInput" class="form-label">Name</label>
+           <select class="form-select" asp-for="absence.CODE" aria-label="Default select example">
+          @{
+            try{
+              foreach(var item in _data.LoadTeamMembers(institution, int.Parse(team))){
+                <option value="@item.CODE">@item.F_NAME @item.F_LASTN</option>
+              }
+            }catch(Exception e){
+
+            }
+          }
+         
+        </select>
+        </div>
+        @* https://www.terrykatzandassociates.com/blog/good-excuses-to-miss-work *@
+        <div class="mb-3">
+          <label for="formGroupExampleInput2" class="form-label">Justification</label>
+          <select class="form-select" asp-for="absence.REASON" aria-label="Default select example">
+          <option selected>Late</option>
+          <option value="Accident">Accident</option>
+          <option value="Death of a Loved One">Death of a Loved One</option>
+          <option value="Personal Illness">Personal Illness</option>
+          <option value="Child’s Illness">Child’s Illness</option>
+          <option value="Emergency">Emergency</option>
+          <option value="Car Problems">Car Problems</option>
+          <option value="Medical Appointments">Medical Appointments</option>
+          <option value="Miscellaneous Absences">Miscellaneous Absences</option>
+          <option value="Unjustified">Unjustified</option>
+        </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" asp-for="communication.Command" value="ReportAbsence"/>
+        <button class="btn btn-primary" type="submit"   data-bs-dismiss="modal">Report</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+@section Scripts{
+  <script>
+    $(document).ready(function() {
+            $('.vlp').click(function(e) {
+                e.preventDefault(); // Prevent the default anchor behavior
+                var anchorId = $(this).attr('id'); // Get the id attribute of the clicked anchor
+                var codexx = $(this).val('id');
+                console.log('Clicked anchor id:', anchorId);
+                $("#import0").val(anchorId);
+                $("#import1").val(anchorId);
+                $("#cxo1").val(codexx);
+                $("#cxo2").val(codexx);
+            });
+
+            $('.vll').click(function(e) {
+                e.preventDefault(); // Prevent the default anchor behavior
+                var anchorId = $(this).attr('id'); // Get the id attribute of the clicked anchor
+                console.log('Clicked anchor id:', anchorId);
+                $("#import2").val(anchorId);
+                $("#import3").val(anchorId);
+                $("#cxo3").val(codexx);
+                $("#cxo4").val(codexx);
+            });
+        });
+  </script>
+}

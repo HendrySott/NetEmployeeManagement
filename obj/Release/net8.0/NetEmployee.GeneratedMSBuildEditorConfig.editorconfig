@@ -1,0 +1,111 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = NetEmployee
+build_property.RootNamespace = NetEmployee
+build_property.ProjectDir = /Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee
+build_property._RazorSourceGeneratorDebug = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/wwwroot/lib/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = d3d3cm9vdC9saWIvX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Account/Logout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWNjb3VudC9Mb2dvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Account/NewPswd.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWNjb3VudC9OZXdQc3dkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Account/ResetPassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWNjb3VudC9SZXNldFBhc3N3b3JkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Account/Signin.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQWNjb3VudC9TaWduaW4uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Calendar.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQ2FsZW5kYXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/MedicalLicence.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvTWVkaWNhbExpY2VuY2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Payroll.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUGF5cm9sbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJvZmlsZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Team.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVGVhbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/TimeManagement.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVGltZU1hbmFnZW1lbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Tools.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVG9vbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/UserProfile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVXNlclByb2ZpbGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Vacation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvVmFjYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXMvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-7hpjind3x1

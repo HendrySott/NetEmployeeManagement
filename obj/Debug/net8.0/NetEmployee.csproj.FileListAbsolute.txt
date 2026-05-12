@@ -1,0 +1,70 @@
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/appsettings.Development.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/appsettings.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/NetEmployee.staticwebassets.runtime.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/NetEmployee
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/NetEmployee.deps.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/NetEmployee.runtimeconfig.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/NetEmployee.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/NetEmployee.pdb
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.GeneratedMSBuildEditorConfig.editorconfig
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.AssemblyInfoInputs.cache
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.AssemblyInfo.cs
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.csproj.CoreCompileInputs.cache
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.MvcApplicationPartsAssemblyInfo.cache
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.RazorAssemblyInfo.cache
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.RazorAssemblyInfo.cs
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/staticwebassets.build.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/staticwebassets.development.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/staticwebassets/msbuild.NetEmployee.Microsoft.AspNetCore.StaticWebAssets.props
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/staticwebassets/msbuild.build.NetEmployee.props
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.NetEmployee.props
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.NetEmployee.props
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/staticwebassets.pack.json
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/scopedcss/Pages/Shared/_Layout.cshtml.rz.scp.css
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/scopedcss/bundle/NetEmployee.styles.css
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/scopedcss/projectbundle/NetEmployee.bundle.scp.css
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/refint/NetEmployee.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.pdb
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.genruntimeconfig.cache
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/ref/NetEmployee.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/BouncyCastle.Crypto.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/K4os.Compression.LZ4.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/K4os.Compression.LZ4.Streams.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/K4os.Hash.xxHash.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Microsoft.Bcl.HashCode.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Microsoft.Win32.SystemEvents.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/MySql.Data.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Ubiety.Dns.Core.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Zstandard.Net.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/MySql.Data.EntityFrameworkCore.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/Renci.SshNet.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/SshNet.Security.Cryptography.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/System.Configuration.ConfigurationManager.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/System.Drawing.Common.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/System.Security.Cryptography.ProtectedData.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/System.Security.Permissions.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/System.Windows.Extensions.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/System.Xml.XPath.XmlDocument.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/bin/Debug/net8.0/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.csproj.AssemblyReference.cache
+/Users/systemcreator/project/NetSuite/WorkPlace/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmplo.D2E988BB.Up2Date
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.csproj.AssemblyReference.cache
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.GeneratedMSBuildEditorConfig.editorconfig
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.AssemblyInfoInputs.cache
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.AssemblyInfo.cs
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.csproj.CoreCompileInputs.cache
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.MvcApplicationPartsAssemblyInfo.cache
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.RazorAssemblyInfo.cache
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.RazorAssemblyInfo.cs
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.dll
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/refint/NetEmployee.dll
+/home/hendry/Softw/asp/sofware updated/NetEmployee/NetEmployee/obj/Debug/net8.0/NetEmployee.pdb

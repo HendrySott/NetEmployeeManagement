@@ -1,0 +1,68 @@
+@page
+@inject DataServices _data
+@using System.Security.Claims
+@using NetEmployee.Data
+@{
+  var institution = User.FindFirst(ClaimTypes.Hash)?.Value;
+  var code = User.FindFirst(ClaimTypes.Actor)?.Value;
+  var position_id = @Request.Cookies["positionId"];
+  var team = @Request.Cookies["team"];
+
+
+    //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+}
+
+<br />
+
+   <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Team</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+               
+
+@{
+    try{
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            @foreach(var item in _data.LoadTeamMembers(institution,int.Parse(team))){
+                
+                <div class="col">
+                <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@item.F_NAME</h5>
+                    <p class="card-text">@item.POSITION_ID</p>
+                    
+                </div>
+                </div>
+            </div>
+            }
+
+            
+ 
+</div>
+
+    }catch{
+
+    }
+}
+
+
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>

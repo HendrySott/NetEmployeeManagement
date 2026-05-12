@@ -1,0 +1,606 @@
+@page
+@using NetEmployee.Data
+@using System.Security.Claims
+@model NetEmployee.Pages.TimeManagement
+@using Model
+@inject AccountController _ctr
+@inject DataServices  _data
+
+
+@{
+    //cookies
+    var institution = User.FindFirst(ClaimTypes.Hash)?.Value;
+    var code = User.FindFirst(ClaimTypes.Actor)?.Value;
+    var name = Request.Cookies["fname"];
+
+    //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+    
+    string sum = null;
+    int sumh = 0;
+    double hmissing = 0;
+    int ps_KEY=0;
+                                                            int HOURS = 0;
+                                                            string START = "";
+                                                            float LUNCH = 0;
+                                                            int BREAK = 0;
+                                                            int QUANTITY = 0;
+                                                            int WEEKEND = 0;
+                                                            int Month = 0;
+                                                            int fortnight = 0;
+                                                            int weakly = 0;
+                                                            float end  = 0;
+
+                                          try
+                                            {
+                                                foreach (var ps in _data.IGetPersonByCODE(institution, int.Parse(code)))
+                                                {
+                                                  ps_KEY = ps.POSITION_KEY;
+
+                                                    foreach (var dm in _data.GetPositionById(institution,ps.POSITION_KEY))
+                                                    {
+
+                                                        foreach (var pps in _data.GetShiftUsingID(institution,dm.SHIFT))
+                                                        {
+                                                          
+
+                                                           HOURS = @pps.HOURS;
+                                                            START = @pps.START;
+                                                           
+                                                            LUNCH = @pps.LUNCH;
+                                                            BREAK = @pps.BREAK;
+                                                            QUANTITY = @pps.QUANTITY;
+                                                            WEEKEND = @pps.WEEKEND;
+
+
+                                                            
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            catch (Exception e)
+                                            {
+                                              //@e
+                                            }
+
+
+
+try{
+
+float sumodperiod =  BREAK * 2 + LUNCH;
+
+                                            TimeSpan timeSpan = TimeSpan.FromHours(HOURS);
+
+                                          // Add 4 hours
+                                          timeSpan = timeSpan.Add(TimeSpan.FromMinutes(sumodperiod));
+
+                                          // Convert TimeSpan back to float (hours)
+                                          float endPeriod = (float)timeSpan.TotalHours;
+
+                                            switch(WEEKEND){
+                                              case 71:
+                                                Month = HOURS * 20;
+                                                fortnight = HOURS * 10;
+                                                weakly = HOURS * 5;
+                                              break ;
+                                              case 82:
+                                                Month = HOURS * 20;
+                                                fortnight = HOURS * 10;
+                                                weakly = HOURS * 5;
+                                              break ;
+                                              case 81:
+                                                Month = HOURS * 24;
+                                                fortnight = HOURS * 11;
+                                                weakly = HOURS * 6;
+                                              break ;
+                                              case 7:
+                                                Month = HOURS * 24;
+                                                fortnight = HOURS * 11;
+                                                weakly = HOURS * 6;
+                                              break;
+                                              case 1:
+                                                Month = HOURS * 24;
+                                                fortnight = HOURS * 11;
+                                                weakly = HOURS * 6;
+                                              break;
+                                              case 5:
+                                                Month = HOURS * 24;
+                                                fortnight = HOURS * 11;
+                                                weakly = HOURS * 6;
+                                              break;
+                                            }
+
+}catch(Exception e){}
+                                            
+                                                    
+
+}
+
+
+ <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><i class="fa-regular fa-clock"></i>Time tracking and numbers</h1>
+          </div>
+          <div class="col-sm-6">
+            
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="callout callout-info">
+              <h5><i class="fas fa-info"></i> Note:</h5>
+                @{
+                  try{
+
+
+                    string tms = date.ToString();
+        string[] da = tms.Split('/');
+        int interval = 0;
+
+        ///hour
+        foreach(var item in _data.GetWageByPositionId(institution,ps_KEY))
+        {
+          interval = item.PAYMENT_INTERVAL;
+        }
+
+      int sw = 0;
+      int sws = 0;
+
+
+      var  mm = @da[0]+"/"+ @da[1]+"/"+@da[2];
+   
+      switch(interval){
+        case 2:
+        sw = 15;
+        sws = sw +1;
+        break;
+        case 1:
+        sw = 30;
+        sws = sw +1;
+        break;
+        case 4:
+        sw = 7;
+        sws = sw +1;
+        break;
+      }
+      
+        if (Convert.ToInt32(da[1]) <= sw)
+        {
+            
+            <p>First Period, from day @sw to day @sws of the current month <small class="float-right">Current date @mm</small></p>
+            
+        }
+        else
+        {
+            <p>Second period, from the day @sws to the 30th day of the current month <small class="float-right">Current date @mm</small></p>
+            
+            
+        }
+
+                  }catch(Exception e){
+
+                  }
+        
+                               
+    }
+            </div>
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>@Request.Cookies["institutionName"]</h4>
+                                      
+
+                    
+
+                   
+                               
+        
+        
+                  
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  
+                  <address>
+                    <strong>Address</strong><br>
+                    @{
+                      try{
+                        foreach(var item in _data.getInstitutionalAddress(institution)){
+                          <p>Building: @item.BUILDING_NAME<br>
+                         Number: @item.NUMBER<br>
+                         Phone: @item.PHONE
+                        
+                         
+                         </p>
+                          
+                        }
+                      }catch(Exception e){
+
+                      }
+                    }
+                    
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                 <address>
+                    <strong>Personal Information</strong><br>
+                    Name: @Request.Cookies["fname"]<br>
+                    Last name: @Request.Cookies["flastname"]<br>
+                    Phone: @Request.Cookies["phone"]<br>
+                    Email: @Request.Cookies["email"]<br>
+                    Position: @Request.Cookies["positionName"]<br>
+                    Date of admission: @Request.Cookies["admitionDate"]
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  <address>
+                    
+                    <strong>Schedule</strong><br>
+                    Start at: @START<br>
+                    Finish at: @endPeriod<br>
+                    Break: @BREAK<br>
+                    Lunch: @LUNCH<br>
+
+                    Total month: @Month<br>
+Total fortnight: @fortnight<br>
+Total weakly: @weakly<br>
+Total day: @HOURS<br>
+Overtime: -
+
+                  </address>
+                  
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped">
+                    <thead id="TimeTracking">
+                    <tr>
+                      <th>#</th>
+                      <th>Date</th>
+                      <th>Hours required</th>.
+                      <th>Hours completed</th>
+                      <th>Missing hours</th> 
+                      <th>Overtime</th>
+                      
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        
+                        double totalmissing = 0;
+                        try
+                        {
+                            int h = 0;
+                            int m = 0;
+                            int s = 0;
+                            int hg1, hg2;
+                            string hg = null;
+                            int count = 0;
+                            string sumTotalTime = null;
+
+                            string[] words2 = date.Split('/');
+                            
+                            ///hour
+                                
+                            int month = Convert.ToInt32(words2[0]);
+                            int day = Convert.ToInt32(words2[1]);
+                            int year = Convert.ToInt32(words2[2]);
+                            string from = null;
+                            string to = null;
+                            if (day >= 16)
+                            {
+                                to = year +"-"+ month+"-"+"30";
+                                from = year +"-"+ month+"-"+"16";
+                            }
+                            else
+                            {
+                                to = year +"-"+ month+"-"+"15";
+                                from = year +"-"+ month+"-"+"01";
+                            }
+                            
+                          
+
+
+                        
+                            
+                            foreach (var i in _data.LoadAllTimeFromTrackerDataAndId(institution, int.Parse(code), from, to))
+                            {
+                                
+                                DateTime d1 = DateTime.Parse(i.TOTAL);
+                                sumTotalTime = d1.ToString("hh:mm:ss");
+
+
+                                string tmf = sumTotalTime;
+                                string[] str = tmf.Split(':');
+
+                                ///hour
+                                h += Convert.ToInt32(str[0]);
+                                m += Convert.ToInt32(str[1]);
+                                s += Convert.ToInt32(str[2]);
+
+                                sum = h + ":" + m + ":" + s;
+                                count += 1;
+                                
+                                
+                                <tr>
+                                    <td scope="row">@count</td>
+                                    <td>@i.DATESH</td>
+                                    <td>
+                                        
+                                        @{
+                                            try
+                                            {
+                                                foreach (var ps in _data.IGetPersonByCODE(institution,i.CODE))
+                                                {
+                                                    foreach (var dm in _data.GetPositionById(institution,ps.POSITION_KEY))
+                                                    {
+
+                                                        foreach (var pps in _data.GetShiftUsingID(institution,dm.SHIFT))
+                                                        {
+                                                            @pps.HOURS
+                                                            sumh += pps.HOURS;
+                                                            string tx = i.TOTAL.ToString();
+                                                            string[] words1 = tx.Split(':');
+
+                                                            ///hour
+                                                            hg1 = Convert.ToInt32(words1[0]);
+                                                            hg2 = Convert.ToInt32(words1[1]);
+                                                            hg = hg1 + "." + hg2;
+                                                            hmissing = Convert.ToDouble(pps.HOURS) - Convert.ToDouble(hg);
+                                                            totalmissing += hmissing;
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            catch (Exception e)
+                                            {
+                                            }
+                                            
+                                        }
+                                    </td>
+                                    <td>@i.TOTAL</td>
+                                    <td>@Double.Round(@hmissing, 2)</td>
+                                    <td></td>
+                                    
+                                </tr>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            
+                        }
+                        
+                    }
+                    
+
+                    </tbody>
+
+                  </table>
+                </div>
+                <!-- /.col -->
+              </div>
+             
+
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+<div class="modal fade" id="AvailableModel" aria-hidden="true" aria-labelledby="AvailableModelLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AvailableModelLabel">Time registry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            
+            
+            @{
+                try
+                {
+                    var d = _data.TrackUserHavailability(institution, date);
+                    if (d.Count() == 0)
+                    {
+                        <h3>Offline</h3>
+                    }
+                    else
+                    {
+                        foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+                                     
+                                case "BREAK":
+                                    <h3>Break</h3>
+                                    break;
+                                case "LUNCH":
+                                    <h3>Lunch</h3>
+                                    break;
+                                case "OTHER":
+                                    <h3>Other</h3>
+                                    break;
+                                case "END":
+                                    <h3>End day</h3>
+                                    break;
+                                case "READY":
+                                    <h3>Online</h3>
+                                    break;
+                                default:
+                                    <h3>Offline</h3>
+                                    break;
+
+                            }
+                                
+                        }
+                        
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                   
+                }
+            <select class="form-select" id="sender" style="margin: -45px 10px 7px 0px;
+                                                               width: 22%;
+                                                               float: right;">
+               
+                    @try
+                    {
+                        
+                        var d = _data.TrackUserHavailability(institution, date);
+                        if (d.Count() == 0)
+                        {
+                            <option selected>Choose</option>
+                            <option value="available">Available</option>
+                            
+                        }
+                        else
+                        {
+                            foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+
+                                case "BREAK":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "LUNCH":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "OTHER":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "END":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+
+                                    break;
+                                case "READY":
+
+
+                                    @if (t.LUNCH_S != "-")
+                                    {
+                                        <option selected>Choose</option>
+
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected>Choose</option>
+                                        <option value="lunch">Lunch</option>
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+
+
+                                    break;
+                                default:
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="break">Break</option>
+                                    <option value="other">Other</option>
+                                    <option value="end">End day</option>
+                                    break;
+
+                            }
+
+                        }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                
+
+            </select>
+             }
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="1" class="table-active">Start</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Lunch</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Other</th>
+                    <th scope="col" colspan="1" class="table-active">End Day</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    @{
+                        try
+                        {
+                            foreach (var item in _data.LookUpUserTimeTracker(institution,date,int.Parse(code)))
+                            {
+                                
+                                    <th>@item.START</th>
+                                    <td>@item.BREAK</td>
+                                    <td>@item.BREAK_</td>
+                                    <td>@item.LUNCH</td>
+                                    <td>@item.LUNCH_</td>
+                                    <th>@item.BREAKL</th>
+                                    <td>@item.BREAKL_</td>
+                                    <th>@item.OTHER</th>
+                                    <td>@item.OTHER_</td>
+                                    <th>@item.END</th>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <form method="post">
+                <input type="hidden" asp-for="communication.Aux" id="receiver" />
+                <input type="hidden" asp-for="communication.Command" value="timeOnTracker" />
+                <input type="submit" id="sendDataToTracker" class="btn btn-primary"  data-bs-dismiss="modal" value="Regiater">
+            </form>
+            
+        </div>
+        
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+$primary: #a4a5a6;
+$danger: #ff4136;
+
+$theme-colors: (
+  "primary": $primary,
+  "danger": $danger
+
+);
+
+// Override navbar background color
+.navbar {
+  background-color: #007bff; // your custom color
+}
+
+@import '/lib/bootstrap/scss/bootstrap';

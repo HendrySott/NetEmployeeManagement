@@ -1,0 +1,231 @@
+@page
+@model NetEmployee.Pages.UserProfile
+@using NetEmployee.Data
+@using NetEmployee.Data
+@using System.Security.Claims
+@inject AccountController _ctr
+@inject DataServices _data
+
+
+
+@{
+
+
+    //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+   
+    string grade = "";
+}
+
+@{
+
+    var ins =  @User.FindFirst(ClaimTypes.Hash)?.Value;
+    var code =  @User.FindFirst(ClaimTypes.Actor)?.Value;
+    }@{
+    try
+    {
+
+        foreach (var person in _data.GetPerson(ins,int.Parse(code) ))
+        {
+
+            grade = person.GRADE;
+
+    <section class="content">
+
+      <!-- Default box -->
+      
+        
+        <div class="card-body">
+
+
+
+          <form method="post" id="basic-form" style="background-color: #fff; ">
+
+  
+        <div class="container">
+    
+    <input type="hidden" asp-for="upd.CODE" value="@person.CODE"/>
+        <h1>@person.F_NAME @person.S_NAME @person.F_LASTN @person.S_LASTN</h1>
+        <div class="row">
+            <div class="col">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">First name</label>
+                    <input type="text" asp-for="upd.F_NAME" value="@person.F_NAME"  class="form-control" id="fname" disabled required minlength="3" maxlength="15">
+                </div>
+            </div>
+            <div class="col">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Middle name</label>
+                    <input type="text" asp-for="upd.S_NAME" value="@person.S_NAME" class="form-control" id="sname" disabled required minlength="3" maxlength="15">
+                </div>
+            </div>
+            
+        </div>
+ 
+    
+    
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Paternal last name</label>
+                <input type="text" asp-for="upd.F_LASTN" value="@person.F_LASTN" class="form-control" id="flast" disabled required minlength="3" maxlength="15">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Maternal last name</label>
+                <input type="text" asp-for="upd.S_LASTN" value="@person.S_LASTN" class="form-control" id="slast" disabled required minlength="3" maxlength="15">
+            </div>
+        </div>
+        
+    </div>
+    <hr/>
+    <h2> Contact</h2>
+    
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Phone</label>
+                <input type="tel" asp-for="upd.PHONE" value="@person.PHONE" class="form-control" id="phone"  required minlength="10" maxlength="13">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Id</label>
+                <input type="text" asp-for="upd.IDENTIFICATION" value="@person.IDENTIFICATION" class="form-control" id="uid"  required minlength="12" maxlength="12">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input type="email" asp-for="upd.PERSONAL_EMAIL" value="@person.PERSONAL_EMAIL" class="form-control" id="email"  required>
+            </div>
+        </div>
+    </div>
+    
+    <hr/>
+    <h2> Address</h2>
+    <div class="row">
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Street</label>
+                <input type="text" asp-for="upd.STREET" value="@person.STREET" class="form-control" id="street"  required minlength="3" maxlength="15">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Home</label>
+                <input type="number" asp-for="upd.HOME" value="@person.HOME" class="form-control"  id="stnumber"  required minlength="1" maxlength="9">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">County</label>
+                <input type="text" asp-for="upd.COUNTY" value="@person.COUNTY" class="form-control" id="sector"   required minlength="3" maxlength="15">
+            </div>
+        </div>
+        <div class="col">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">County</label>
+                <input type="text" asp-for="upd.COUNTRY" value="@person.COUNTRY" class="form-control" id="region"  required minlength="3" maxlength="15">
+            </div>
+        </div>
+    </div>
+    <hr />
+    
+    <h2>Education</h2>
+    <div class="col">
+            <div class="mb-3">
+                <a class="btn btn-primary" data-bs-toggle="modal" href="#AcademicalGrade" role="button">Update academical grade</a>
+
+                <label for="exampleInputEmail1" class="form-label">Academical grade</label>
+                <input type="text" value="@grade" disabled/>
+                
+            </div>
+
+            
+        </div>
+       
+        
+ 
+    
+    
+    <hr/>
+   
+    <input type="hidden" value="@person.CODE" id="code" />
+    <input type="hidden"  asp-for="comm" value="updAll"/>
+  
+    
+    
+    
+    <br />
+
+            <div style="float:right">
+                <button  type="submit" id="save" class="btn btn-primary" \>Save</button>
+
+            </div>
+            
+            
+
+       
+ 
+    
+    
+    
+</div>
+<br />
+<br />
+        
+    
+
+</form>
+
+
+
+
+        </div>
+        
+
+    </section>
+
+
+}
+
+}
+    catch (Exception e)
+    {
+        
+    }
+}
+
+<div class="modal fade" id="AcademicalGrade" aria-hidden="true" aria-labelledby="AcademicalGradeLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AcademicalGradeLabel">Update academical grade</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+
+      
+      <div class="modal-body">
+        <label for="exampleInputEmail1" class="form-label">Academical grade</label>
+                <select class="form-select" asp-for="upd.GRADE"  aria-label="Default select example" id="grade" style="width: auto" required>
+                    <option value="Elementary School">Elementary School</option>.
+                    <option value="High school">High school</option>.
+                    <option value="College">College</option> 
+                    <option value="Postgraduate">Postgraduate</option>
+                    <option value="Master's degree">Master's degree</option>
+
+                </select>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden"  asp-for="comm" value="updC"/>
+
+        <button type="submit" class="btn btn-primary" data-bs-target="#AcademicalGrade2" data-bs-toggle="modal" data-bs-dismiss="modal">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

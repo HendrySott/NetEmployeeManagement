@@ -1,0 +1,447 @@
+@page
+@using NetEmployee.Data
+@using System.Security.Claims
+@model NetEmployee.Pages.MedicalLicence
+@inject DataServices _data
+
+@{
+  var institution = User.FindFirst(ClaimTypes.Hash)?.Value;
+  var code = User.FindFirst(ClaimTypes.Actor)?.Value;
+      //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+}
+ <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1><i class="fa-solid fa-hospital-user"></i> Medical license Registry</h1>
+          </div>
+          <div class="col-sm-6">
+            <div class="float-sm-right">
+              <a href="https://www.sisalril.gob.do/phocadownload/SobreNosotros/MarcoLegal/Reglamentos/Reglamento_SobreElSibsodoPorEnfermedadComun.pdf">Support file CNSS</a>
+            </div>
+          </div>
+        </div>
+ 
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="callout callout-info">
+              <h5><i class="fas fa-info"></i> Note:</h5>
+              <p translate="yes">Every license has to be submitted within the first 24 hours; try to be in contact with your supervisor as soon as possible.</p>
+            </div>
+
+
+            <!-- Main content -->
+            <div class="invoice p-3 mb-3">
+              <!-- title row -->
+              <div class="row">
+                <div class="col-12">
+                  <h4>
+                    @Request.Cookies["institutionName"]
+                    <div class="float-right">
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" href="#VacationSetUpModal">Report license</button>
+                  
+                  </div>
+                  </h4>
+                  
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- info row -->
+              <div class="row invoice-info">
+                <div class="col-sm-4 invoice-col">
+                  
+                  <address>
+                    <strong>Address</strong><br>
+                    @{
+                      try{
+                        foreach(var item in _data.getInstitutionalAddress(institution)){
+                          <p>Building: @item.BUILDING_NAME<br>
+                         Number: @item.NUMBER<br>
+                         Phone: @item.PHONE
+                        
+                         
+                         </p>
+                          
+                        }
+                      }catch(Exception e){
+
+                      }
+                    }
+                    
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                 
+                  <address>
+                    <strong>Personal Information</strong><br>
+                    Name: @Request.Cookies["fname"]<br>
+                    Last name: @Request.Cookies["flastname"]<br>
+                    Phone: @Request.Cookies["phone"]<br>
+                    Email: @Request.Cookies["email"]<br>
+                    Position: @Request.Cookies["positionName"]<br>
+                    Date of admission: @Request.Cookies["admitionDate"]
+                  </address>
+                </div>
+                <!-- /.col -->
+                <div class="col-sm-4 invoice-col">
+                  
+                </div>
+                <!-- /.col -->
+              </div>
+              <!-- /.row -->
+              
+
+              <!-- Table row -->
+              <div class="row">
+                <div class="col-12 table-responsive">
+                  <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Registration date</th>
+                        <th scope="col" translate="Concept">Concept</th>
+                        <th scope="col" translate="Start data">Start date</th>
+                        <th scope="col" translate="End Date">End date</th>
+                        <th scope="col" translate="Days">Days of license</th>
+                        <th scope="col" translate="Days">BackUp</th>
+                        <th scope="col" translate="Days">State</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      @{
+                        try{
+                          int count = 0;
+                          foreach(var item in _data.LoadMedicalLicenseRegistry(institution, int.Parse(code))){
+                            count += 1;
+                            <tr>
+                              <th scope="row">@count</th>
+                              <th>@item.DATE_CREATION</th>
+                              <td>@item.CONSEPT</td>
+                              <td>@item.FROM_DATE</td>
+                              <td>@item.TO_DATE</td>
+                              <td>@item.DAYS</td>
+                              <td><a href="/Private/Files/License/@item.BACKUP"><i class="fa-solid fa-download"></i></a> </td>
+                              <td>
+                                @switch(@item.STATE){
+                                  case 0:
+                                    <p>Pending approve</p>
+                                  break;
+                                  case 1:
+                                    <p>Approve</p>
+                                  break;
+                                  case 3:
+                                    <p>Declined</p>
+                                  break;
+                                }
+                              </td>
+                              </tr>
+                          }
+
+                        }catch(Exception e){
+                            @e
+                        }
+                      }
+                        
+                    
+                    </tbody>
+                </table>
+                </div>
+                <!-- /.col -->
+              </div>
+             
+
+              <!-- this row will not appear when printing -->
+              
+            </div>
+            <!-- /.invoice -->
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <div class="modal fade" id="VacationSetUpModal" aria-hidden="true" aria-labelledby="VacationSetUpModalLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="VacationSetUpModalLabel">License registry form</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-5 col-md-6">
+                <label for="inputDates" class="form-label">Start date</label>
+                  <input type="date" asp-for="medical.FROM_DATE" id="inputDates" class="form-control" required>
+                  
+              </div>
+              <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+                <label for="inputDatef" class="form-label">End date</label>
+                  <input type="date" asp-for="medical.TO_DATE" id="inputDatef" class="form-control" required>
+                  
+              </div>
+              <div class="col-sm-5 col-md-6">
+                <label for="countdays" class="form-label">Days on license</label>
+                  <input type="number" asp-for="medical.DAYS" id="countdays" class="form-control" required>
+                  <div id="passwordHelpBlock" class="form-text">
+                    Formato valido: 0.5, 1 etc
+                  </div>
+              </div>
+              <div class="col-sm-5 offset-sm-2 col-md-6 offset-md-0">
+                <label for="Concept" class="form-label">Concept</label>
+                @* @{
+                  try{
+                    foreach(var item in _data.Getmedicalrofile(institution)){
+                      
+                    }
+                  }catch(Exception e){}
+                } *@
+                  <select class="form-select" asp-for="medical.CONSEPT"  id="Concept" class="form-control" required>
+                    @* <option value="Enfermedad o accidente común" selected>Enfermedad o accidente común</option>
+                    <option value="Fallecimiento">Fallecimiento</option>
+                    <option value="Accidente del trabajo o del trayecto">Accidente del trabajo o del trayecto</option>
+                    <option value="Discapacidad">Discapacidad</option>
+                    <option value="Enfermedad profecional">Enfermedad profecional</option>
+                    <option value="Prórroga medicina preventiva">Prórroga medicina preventiva</option>
+                    <option value="Patología del embarazo">Patología del embarazo</option>
+                    <option value="Alumbramiento">Alumbramiento</option>
+                    <option value="Licencia maternal pre y postnatal">Licencia maternal pre y postnatal</option>
+                    <option value="Enfermedad grave del niños">Enfermedad grave del niños</option>
+                    <option value="Celebración del matrimonio">Celebración del matrimonio</option> *@
+
+                     <option value="Common illness or accident" selected>Common illness or accident</option>.
+                    <option value="Death">Death</option>
+                    <option value="Accident at work or commuting">Accident at work or commuting</option>
+                    <option value="Disability">Disability</option>
+                    <option value="Occupational disease">Occupational disease</option> <option value="Occupational disease">Occupational disease</option>.
+                    <option value="Preventive medicine extension">Preventive medicine extension</option>
+                    <option value="Pregnancy pathology">Pregnancy pathology</option>
+                    <option value="Stroke">Stroke</option>
+                    <option value="Maternal pre and postnatal leave">Maternal pre and postnatal leave</option>
+                    <option value="Serious illness of a child">Serious illness of a child</option>
+                    <option value="Celebration of marriage">Celebration of marriage</option>
+                    <option value="Planned early leave">Planned early leave</option>
+
+
+
+                  </select>
+                  
+              </div>
+
+              
+          
+          </div>
+          <label for="backup" class="form-label">Doctor note</label>
+                  <input type="file" asp-for="medical.BACKUP" name="file"  class="form-control" required accept=".pdf,.jpg,.png">
+                  <div id="passwordHelpBlock" class="form-text">
+                    Allowed photo jpg, png or PDF files
+                  </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" asp-for="communication.Command" value="lisence"/>
+          <button type="submit" class="btn btn-primary"  data-bs-dismiss="modal">Save and notify issue</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="AvailableModel" aria-hidden="true" aria-labelledby="AvailableModelLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AvailableModelLabel">Time registry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            
+            
+            @{
+                try
+                {
+                    var d = _data.TrackUserHavailability(institution, date);
+                    if (d.Count() == 0)
+                    {
+                        <h3>Offline</h3>
+                    }
+                    else
+                    {
+                        foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+                                     
+                                case "BREAK":
+                                    <h3>Break</h3>
+                                    break;
+                                case "LUNCH":
+                                    <h3>Lunch</h3>
+                                    break;
+                                case "OTHER":
+                                    <h3>Other</h3>
+                                    break;
+                                case "END":
+                                    <h3>End day</h3>
+                                    break;
+                                case "READY":
+                                    <h3>Online</h3>
+                                    break;
+                                default:
+                                    <h3>Offline</h3>
+                                    break;
+
+                            }
+                                
+                        }
+                        
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                   
+                }
+            <select class="form-select" id="sender" style="margin: -45px 10px 7px 0px;
+                                                               width: 22%;
+                                                               float: right;">
+               
+                    @try
+                    {
+                        
+                        var d = _data.TrackUserHavailability(institution, date);
+                        if (d.Count() == 0)
+                        {
+                            <option selected>Choose</option>
+                            <option value="available">Available</option>
+                            
+                        }
+                        else
+                        {
+                            foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+
+                                case "BREAK":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "LUNCH":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "OTHER":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "END":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+
+                                    break;
+                                case "READY":
+
+
+                                    @if (t.LUNCH_S != "-")
+                                    {
+                                        <option selected>Choose</option>
+
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected>Choose</option>
+                                        <option value="lunch">Lunch</option>
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+
+
+                                    break;
+                                default:
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="break">Break</option>
+                                    <option value="other">Other</option>
+                                    <option value="end">End day</option>
+                                    break;
+
+                            }
+
+                        }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                
+
+            </select>
+             }
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="1" class="table-active">Start</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Lunch</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Other</th>
+                    <th scope="col" colspan="1" class="table-active">End Day</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    @{
+                        try
+                        {
+                            foreach (var item in _data.LookUpUserTimeTracker(institution,date,int.Parse(code)))
+                            {
+                                
+                                    <th>@item.START</th>
+                                    <td>@item.BREAK</td>
+                                    <td>@item.BREAK_</td>
+                                    <td>@item.LUNCH</td>
+                                    <td>@item.LUNCH_</td>
+                                    <th>@item.BREAKL</th>
+                                    <td>@item.BREAKL_</td>
+                                    <th>@item.OTHER</th>
+                                    <td>@item.OTHER_</td>
+                                    <th>@item.END</th>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <form method="post">
+                <input type="hidden" asp-for="communication.Aux" id="receiver" />
+                <input type="hidden" asp-for="communication.Command" value="timeOnTracker" />
+                <input type="submit" id="sendDataToTracker" class="btn btn-primary"  data-bs-dismiss="modal" value="Regiater">
+            </form>
+            
+        </div>
+        
+    </div>
+  </div>
+</div>

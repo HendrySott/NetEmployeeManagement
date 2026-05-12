@@ -1,0 +1,265 @@
+Nivel 1: Personal de limpieza
+Nivel 2: Personal trabajador caja, pasante, Ayudante, 
+Nivel 3: Personal técnicos, electricista. etc
+Nivel 4: Personal administrativo supervisores
+Nivel 5: Encargado de departamento. Puesto administrativo
+Nivel 6: Niveles gerenciales
+Nivel 7: Director
+
+@using System.Security.Claims
+@using NetEmployee.Data
+@using NetEmployee.Model
+
+@inject DataServices _data
+@inject AccountController _ctr
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="es">
+
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Operarius</title>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/css/adminlte.css">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
+    <link rel="stylesheet" href="/lib/DataTables/datatables.min.css" />
+    <link rel="stylesheet" href="/lib/fontawesome/css/all.css"
+</head>
+
+<body>
+
+@{
+    string AppName = "Operarius";
+    if (!User.Identity.IsAuthenticated){
+         @RenderBody()
+    }else{
+
+
+
+        var institution = User.FindFirst(ClaimTypes.Hash)?.Value;
+        var code = User.FindFirst(ClaimTypes.Actor)?.Value;
+        //current date
+        DateTime date_ = DateTime.Now;
+        string date = date_.ToString("MM/dd/yyyy");
+        string fname="";
+        string flastname = "";
+
+
+        foreach(var usr in _data.GetUserById(institution,int.Parse(code))){
+            fname = usr.F_NAME;
+            flastname = usr.F_LASTN;
+        }
+
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/TimeManagement">Schedule and hours</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Vacation">Vacation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/MedicalLicence">License</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Profile">Profile</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Payroll">Payroll</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Tools">Tools</a>
+                            </li>
+                        
+
+                            
+                        </ul>
+
+                        
+                    </div>
+                    @* <div class="btn-group">
+                    <div  class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-sharp fa-thin fa-list-check"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><button class="dropdown-item" type="button">Action</button></li>
+                        <li><button class="dropdown-item" type="button">Another action</button></li>
+                        <li><button class="dropdown-item" type="button">Something else here</button></li>
+                    </ul>
+                    </div> *@
+
+                    @* <div class="btn-group">
+                    <div  class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fa-regular fa-comment"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><button class="dropdown-item" type="button">Action</button></li>
+                        <li><button class="dropdown-item" type="button">Another action</button></li>
+                        <li><button class="dropdown-item" type="button">Something else here</button></li>
+                    </ul>
+                    </div> *@
+
+                    <div class="btn-group">
+                    <div  class=" dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" >
+                        <i class="fa-regular fa-bell"></i>
+                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        @{
+                            try{
+                                foreach(var item in _data.LoadPersonalNotifications(institution, int.Parse(code), true)){
+                                    <li class="list-group-item d-flex justify-content-between align-items-start ">
+                                        <div class="ms-2 me-auto dropdown-item">
+                                        <div class="fw-bold">@item.DATA</div>
+                                        
+                                        </div>
+                                        <span class="badge bg-primary rounded-pill"></span>
+                                    </li>
+                                }
+                            }catch(Exception e){
+
+                            }
+                        }
+                        
+                        
+                        
+                        <li><hr class="dropdown-divider"></li>
+                        <li><button class="dropdown-item" type="button"><i class="fa-regular fa-trash-can"></i>Clean</button></li>
+
+                    </ul>
+                
+
+                    </div>
+                    <div class="dropdown" >
+                        @{
+                            try
+                            {
+                                var d = _data.TrackUserHavailability(institution, date);
+    
+    
+                                if (d.Count() == 0)
+                                {
+                                    <a class="btn btn-primary-outline dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                        @fname @flastname
+                                    </a>
+                                }
+                                else
+                                {
+                                    foreach (var t in _data.TrackUserHavailability(institution, date))
+                                    {
+                                        switch (t.STATE)
+                                        {
+                                            case "BREAK":
+                                                <a class="btn btn-outline-primary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">@fname @flastname</a>
+                                                break;
+                                            case "LUNCH":
+                                                <a class="btn btn-outline-warning dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">@fname @flastname</a>
+                                                break;
+                                            case "OTHER":
+                                                <a class="btn btn-outline-secondary dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">@fname @flastname</a>
+                                                break;
+                                            case "END":
+                                                <a class="btn btn-outline-danger dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">@fname @flastname</a>
+                                                break;
+                                            case "READY":
+                                                <a class="btn btn-outline-success dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">@fname @flastname</a>
+                                                break;
+                                            default:
+                                                <a class="btn btn-outline-dark dropdown-toggle"  href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">@fname @flastname</a>
+                                                break;
+                                        }
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                            }
+                        }
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            <li>
+                                <a class=" dropdown-item" type="button" data-bs-toggle="modal" href="#AvailableModel">
+                                    Time Tracker
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class=" dropdown-item" asp-area="" asp-page="/Account/Logout">
+                                    <i class="fas fa-sign-out-alt"></i> Logout
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                
+
+
+
+
+                    
+
+                </div>
+                
+            </nav>
+        </header>
+
+
+
+
+
+        <div class="container">
+            <main role="main" class="pb-3">
+
+                
+                @RenderBody()
+
+
+
+
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2024 - Operarius system <a href="https://syscrafter.com/">About</a>
+            </div>
+        </footer>
+
+
+
+
+
+    }
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="/lib/DataTables/datatables.min.js"></script>
+<script src="/lib/fontawesome/js/all.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+
+
+
+
+<script>
+    $('#sender').on('change',function(e){
+                 var ins = $(this).val();
+                      $('#receiver').val(ins);
+            });
+
+       
+    </script>

@@ -1,0 +1,479 @@
+@page
+@model NetEmployee.Pages.Tools
+
+@using NetEmployee.Data
+@using System.Security.Claims
+@inject AccountController _ctr
+@inject DataServices _data
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@inject DataServices _data
+@inject AccountController _ctr
+@{
+    var institution = User.FindFirst(ClaimTypes.Hash)?.Value;
+    var code = User.FindFirst(ClaimTypes.Actor)?.Value;
+    var role = User.FindFirst(ClaimTypes.Role)?.Value;
+    //current date
+    DateTime date_ = DateTime.Now;
+    string date = date_.ToString("MM/dd/yyyy");
+    string fname="";
+    string flastname = "";
+
+
+ 
+}
+
+
+<br />
+
+   <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <div class="card">
+              
+
+               
+      <div class="card card-warning">
+              <div class="card-header">
+                <h3 class="card-title">Productivity matrix</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <form method="post">
+                   
+
+
+                  <div class="row">
+                    
+      
+   
+                    <div class="col-sm-6">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <form method="post">
+                        <label data="Urgent">Urgent: Do</label>
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"Urgent")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+                          <div class="input-group input-group-sm mb-3" style="margin: 5px 0px 0px 0px;">
+                            <input type="hidden" asp-for="personalTk.RANKING" value="Urgent"/>
+                            <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                            <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_DATE" type="date" name="partydate"/>
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_TIME" type="time" name="partydate"/>
+
+                            <button class="btn btn-outline-secondary" type="submit" data="Add">Add</button>
+                          </div>
+                        </form>
+                        
+                      </div>
+                      
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <form method="post">
+                        <label>No urgente: Decide</label>
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"No urgent")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+
+                       
+
+                        <div class="input-group input-group-sm mb-3" style="margin: 5px 0px 0px 0px;">
+                            <input type="hidden" asp-for="personalTk.RANKING" value="No urgent"/>
+                            <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                            <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_DATE" type="date" name="partydate"/>
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_TIME" type="time" name="partydate"/>
+                            <button class="btn btn-outline-secondary" type="submit" data="Add">Add</button>
+                          </div>
+
+
+                        </form>
+                      </div>
+                      
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                   
+      
+   
+                    
+                    
+                    <div class="col-sm-6">
+                      <!-- Select multiple-->
+                      <div class="form-group">
+                        <form method="post">
+                          <label data="Urgent">Not Important, Urgent: Delegate</label>
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"Important")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+
+                       
+                        <div class="input-group input-group-sm mb-3" style="margin: 5px 0px 0px 0px;">
+                            <input type="hidden" asp-for="personalTk.RANKING" value="Important"/>
+                            <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                            <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_DATE" type="date" name="partydate"/>
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_TIME" type="time" name="partydate"/>
+                            <button class="btn btn-outline-secondary" type="submit" data="Add">Add</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="form-group">
+                        <form method="post">
+                          <label data="Urgent">Not Important, Not Urgent: Delete</label>
+                        
+                        
+                        <div class="form-control" style="height: 18%;overflow: auto;">
+                         @{
+                          try{
+                            foreach(var item in _data.GetPersonalTaskProd(institution,int.Parse(code),"No Important")){
+                              <div class="form-check" style="padding-left: 2.25rem;">
+                                <input class="form-check-input" type="checkbox" @item.VALUE>
+                                <label class="form-check-label">@item.TASK</label>
+                              </div>
+                            }
+
+                          }catch(Exception e){
+
+                          }
+
+                         }
+                          
+
+                        </div>
+
+                         <div class="input-group input-group-sm mb-3" style="margin: 5px 0px 0px 0px;">
+                            <input type="hidden" asp-for="personalTk.RANKING" value="No Important"/>
+                            <input type="hidden" asp-for="communication.Command" value="PersonalTask" />
+                            <input type="text" asp-for="personalTk.TASK" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_DATE" type="date" name="partydate"/>
+                            <input class="btn btn-outline-secondary" asp-for="personalTk.EXPIRATION_TIME" type="time" name="partydate"/>
+                            <button class="btn btn-outline-secondary" type="submit" data="Add">Add</button>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                 
+
+
+
+                  
+                </form>
+              </div>
+              <!-- /.card-body -->
+            </div>
+
+
+
+
+            </div>
+            
+          </div>
+          <!-- /.col -->
+        </div>
+
+
+
+        @* <div class="row">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Productibity volume</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+               
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>mdo</td>
+    </tr>
+   
+  </tbody>
+  <tfoot>
+    <tr>
+      <th scope="row"><button type="button" class="btn btn-light">-</button> <button type="button" class="btn btn-light">+</button></th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>mdo</td>
+    </tr>
+  </tfoot>
+</table>
+
+
+
+              </div>
+              <!-- /.card-body -->
+            </div>
+            
+          </div>
+          <!-- /.col -->
+        </div> *@
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+
+
+    <div class="modal fade" id="AvailableModel" aria-hidden="true" aria-labelledby="AvailableModelLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="AvailableModelLabel">Time registry</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="modal-body">
+            
+            
+            @{
+                try
+                {
+                    var d = _data.TrackUserHavailability(institution, date);
+                    if (d.Count() == 0)
+                    {
+                        <h3>Offline</h3>
+                    }
+                    else
+                    {
+                        foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+                                     
+                                case "BREAK":
+                                    <h3>Break</h3>
+                                    break;
+                                case "LUNCH":
+                                    <h3>Lunch</h3>
+                                    break;
+                                case "OTHER":
+                                    <h3>Other</h3>
+                                    break;
+                                case "END":
+                                    <h3>End day</h3>
+                                    break;
+                                case "READY":
+                                    <h3>Online</h3>
+                                    break;
+                                default:
+                                    <h3>Offline</h3>
+                                    break;
+
+                            }
+                                
+                        }
+                        
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                   
+                }
+            <select class="form-select" id="sender" style="margin: -45px 10px 7px 0px;
+                                                               width: 22%;
+                                                               float: right;">
+               
+                    @try
+                    {
+                        
+                        var d = _data.TrackUserHavailability(institution, date);
+                        if (d.Count() == 0)
+                        {
+                            <option selected>Choose</option>
+                            <option value="available">Available</option>
+                            
+                        }
+                        else
+                        {
+                            foreach (var t in _data.TrackUserHavailability(institution, date))
+                        {
+                            switch (t.STATE)
+                            {
+
+                                case "BREAK":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "LUNCH":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "OTHER":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    break;
+                                case "END":
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+
+                                    break;
+                                case "READY":
+
+
+                                    @if (t.LUNCH_S != "-")
+                                    {
+                                        <option selected>Choose</option>
+
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+                                    else
+                                    {
+                                        <option selected>Choose</option>
+                                        <option value="lunch">Lunch</option>
+                                        <option value="break">Break</option>
+                                        <option value="other">Other</option>
+                                        <option value="end">End day</option>
+                                    }
+
+
+                                    break;
+                                default:
+                                    <option selected>Choose</option>
+                                    <option value="available">Available</option>
+                                    <option value="lunch">Lunch</option>
+                                    <option value="break">Break</option>
+                                    <option value="other">Other</option>
+                                    <option value="end">End day</option>
+                                    break;
+
+                            }
+
+                        }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        
+                    }
+                
+
+            </select>
+             }
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th scope="col" colspan="1" class="table-active">Start</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Lunch</th>
+                    <th scope="col" colspan="2" class="table-active">Break</th>
+                    <th scope="col" colspan="2" class="table-active">Other</th>
+                    <th scope="col" colspan="1" class="table-active">End Day</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    @{
+                        try
+                        {
+                            foreach (var item in _data.LookUpUserTimeTracker(institution,date,int.Parse(code)))
+                            {
+                                
+                                    <th>@item.START</th>
+                                    <td>@item.BREAK</td>
+                                    <td>@item.BREAK_</td>
+                                    <td>@item.LUNCH</td>
+                                    <td>@item.LUNCH_</td>
+                                    <th>@item.BREAKL</th>
+                                    <td>@item.BREAKL_</td>
+                                    <th>@item.OTHER</th>
+                                    <td>@item.OTHER_</td>
+                                    <th>@item.END</th>
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                        }
+                    }
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="modal-footer">
+            <form method="post">
+                <input type="hidden" asp-for="communication.Aux" id="receiver" />
+                <input type="hidden" asp-for="communication.Command" value="timeOnTracker" />
+                <input type="submit" id="sendDataToTracker" class="btn btn-primary"  data-bs-dismiss="modal" value="Regiater">
+            </form>
+            
+        </div>
+        
+    </div>
+  </div>
+</div>
