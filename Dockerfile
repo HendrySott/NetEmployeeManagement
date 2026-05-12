@@ -13,7 +13,7 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-EXPOSE 8081
+EXPOSE 8080
 
 
 ENTRYPOINT ["dotnet", "NetEmployee.dll"]
