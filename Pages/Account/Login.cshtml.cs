@@ -58,7 +58,7 @@ public class LoginModel : PageModel
         //     return Page();
         // }
 
-        var validator = _data.validateUser(id);
+        var validator = _data.validateUser(id.ToString());
         if(validator.Count() > 0 ){
             foreach(var item in validator){
                 codex = item.Code;
@@ -122,7 +122,7 @@ public class LoginModel : PageModel
                                         {
                                             
                                             if(inst.NAME.ToString() != null){Response.Cookies.Append("institutionName", inst.NAME.ToString(), cookieOptions);}
-                                            if(inst.Tax_ID.ToString() != null){Response.Cookies.Append("rnc", inst.Tax_ID.ToString(), cookieOptions);}
+                                            if(inst.TAX_ID.ToString() != null){Response.Cookies.Append("rnc", inst.TAX_ID.ToString(), cookieOptions);}
                                         }
                                         
                                         var claims = new List<Claim>

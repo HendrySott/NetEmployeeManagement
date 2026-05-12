@@ -21,6 +21,7 @@
     int sumh = 0;
     double hmissing = 0;
     int ps_KEY=0;
+                                                            float endPeriod = 0;
                                                             int HOURS = 0;
                                                             string START = "";
                                                             float LUNCH = 0;
@@ -77,7 +78,7 @@ float sumodperiod =  BREAK * 2 + LUNCH;
                                           timeSpan = timeSpan.Add(TimeSpan.FromMinutes(sumodperiod));
 
                                           // Convert TimeSpan back to float (hours)
-                                          float endPeriod = (float)timeSpan.TotalHours;
+                                          endPeriod = (float)timeSpan.TotalHours;
 
                                             switch(WEEKEND){
                                               case 71:

@@ -532,15 +532,15 @@ public class ApplicantNote{
     public string COLOR{get;set;}
 }
 
-public class CampAutoSendModel{
+public class RecruitmentCampaignEmailAuto{
     public int ID{get;set;}
     public string INSTITUTION{get;set;}
-    public string FROM_{get;set;}
-    public string TO_{get;set;}
+    public string FROM{get;set;}
+    public string TO{get;set;}
     public string CC{get;set;}
-    public string SUBJECT_{get;set;}
+    public string SUBJECT{get;set;}
     public string BODY{get;set;}
-    public int AUTO{get;set;}
+    public bool AUTO{get;set;}
     public int POSITION_ID{get;set;}
     public int CODE{get;set;}
     public string DATE_TIME{get;set;}
@@ -662,6 +662,8 @@ public class InstitutionModel
     public string INSTITUTIONALEMAIL { get; set; }
     public string INSTITUTION { get; set; }
     public string DEF_PASS { get; set; }
+    public int RNC { get; set; }
+    public int CODE { get; set; }
 }
 
 public class DepartmentProfile
