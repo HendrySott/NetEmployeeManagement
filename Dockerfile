@@ -16,4 +16,4 @@ COPY --from=build /app/publish .
 EXPOSE 8080
 
 
-ENTRYPOINT ["dotnet", "Authentication.dll"]
+ENTRYPOINT ["dotnet", "NetEmployee.dll"]
